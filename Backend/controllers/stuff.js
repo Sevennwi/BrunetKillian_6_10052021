@@ -95,19 +95,19 @@ exports.getAllThings = (req, res, next) => {
 exports.likeSauce = (req, res, next) => {
 
   switch (req.body.like) {
-    case 0:                                                   //cas: req.body.like = 0
+    case 0:                                                   
       Thing.findOne({ _id: req.params.id })
         .then((sauce) => {
-          if (sauce.usersLiked.find( user => user === req.body.userId)) {  // on cherche si l'utilisateur est déjà dans le tableau usersLiked
-            Thing.updateOne({ _id: req.params.id }, {         // si oui, on va mettre à jour la sauce avec le _id présent dans la requête
-              $inc: { likes: -1 },                            // on décrémente la valeur des likes de 1 (soit -1)
-              $pull: { usersLiked: req.body.userId }          // on retire l'utilisateur du tableau.
+          if (sauce.usersLiked.find( user => user === req.body.userId)) {  
+            Thing.updateOne({ _id: req.params.id }, {         
+              $inc: { likes: -1 },                           
+              $pull: { usersLiked: req.body.userId }          
             })
-              .then(() => { res.status(201).json({ message: "vote enregistré."}); }) //code 201: created
+              .then(() => { res.status(201).json({ message: "vote enregistré."}); })
               .catch((error) => { res.status(400).json({error}); });
 
           } 
-          if (sauce.usersDisliked.find(user => user === req.body.userId)) {  //mêmes principes que précédemment avec le tableau usersDisliked
+          if (sauce.usersDisliked.find(user => user === req.body.userId)) { 
             Thing.updateOne({ _id: req.params.id }, {
               $inc: { dislikes: -1 },
               $pull: { usersDisliked: req.body.userId }
@@ -119,19 +119,19 @@ exports.likeSauce = (req, res, next) => {
         .catch((error) => { res.status(404).json({error}); });
       break;
     
-    case 1:                                                 //cas: req.body.like = 1
-      Thing.updateOne({ _id: req.params.id }, {             // on recherche la sauce avec le _id présent dans la requête
-        $inc: { likes: 1 },                                 // incrémentaton de la valeur de likes par 1.
-        $push: { usersLiked: req.body.userId }              // on ajoute l'utilisateur dans le array usersLiked.
+    case 1:                                                 
+      Thing.updateOne({ _id: req.params.id }, {             
+        $inc: { likes: 1 },                                 
+        $push: { usersLiked: req.body.userId }              
       })
         .then(() => { res.status(201).json({ message: "Vous aimez la sauce" }); }) 
         .catch((error) => { res.status(400).json({ error }); });
       break;
     
-    case -1:                                                  //cas: req.body.like = 1
-      Thing.updateOne({ _id: req.params.id }, {               // on recherche la sauce avec le _id présent dans la requête
-        $inc: { dislikes: 1 },                                // on décremente de 1 la valeur de dislikes.
-        $push: { usersDisliked: req.body.userId }             // on rajoute l'utilisateur à l'array usersDisliked.
+    case -1:                                                  
+      Thing.updateOne({ _id: req.params.id }, {               
+        $inc: { dislikes: 1 },                               
+        $push: { usersDisliked: req.body.userId }             
       })
         .then(() => { res.status(201).json({ message: "Vous n'aimez pas la sauce" }); }) 
         .catch((error) => { res.status(400).json({ error }); }); 
