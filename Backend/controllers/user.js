@@ -4,17 +4,24 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-      .then(hash => {
-        const user = new User({
-          email: req.body.email,
-          password: hash
-        });
-        user.save()
-          .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-          .catch(error => res.status(400).json({ error }));
-      })
-      .catch(error => res.status(500).json({ error }));
+  console.log(req.body.password.length)
+    if (req.body.password.length >= 6) {
+    
+      bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+          const user = new User({
+            email: req.body.email,
+            password: hash
+          });
+          user.save()
+            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+            .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
+      
+    } else {
+      return res.status(401).json({ error: 'Mot de passe de 6 caractères minimum !' });
+    }
   };
 
 exports.login = (req, res, next) => {

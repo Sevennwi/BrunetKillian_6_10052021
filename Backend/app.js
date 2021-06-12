@@ -8,7 +8,6 @@ dotenv.config()
 const stuffRoutes = require('./routes/stuff');
 const userRoutes = require('./routes/user');
 
-console.log(process.env.DB_USERNAME)
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.h3jxt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
