@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
-  console.log(req.body.password.length)
     if (req.body.password.length >= 6) {
     
       bcrypt.hash(req.body.password, 10)
